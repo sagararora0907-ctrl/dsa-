@@ -1,65 +1,56 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <list>
-#include <unordered_map>
 #include <chrono>
 #include <algorithm>
-#include <iomanip>
+
 using namespace std;
-using namespace chrono;
+using namespace std::chrono;
 
 void print(vector<int> v) { for(int x:v) cout<<x<<" "; cout<<endl; }
 
-// 1. SORTING TESTS
+// 1. SORTING TEST (With Time & Iterations)
 void testSorting() {
-    cout << "\n=== SORTING ALGORITHMS ===\n";
-    vector<int> input = {64,34,25,12,22};
+    cout << "\n=== SORTING ALGORITHMS (Bubble Sort) ===\n";
+    vector<int> input = {64, 34, 25, 12, 22};
+    int iterations = 0;
     cout << "Input: "; print(input);
-    
-    // Bubble sort test (function copy-paste karo yaha)
-    // Quick sort test...
+
+    auto start = high_resolution_clock::now(); // Start Time
+
+    // Bubble Sort Logic
+    for (int i = 0; i < input.size()-1; i++) {
+        for (int j = 0; j < input.size()-i-1; j++) {
+            iterations++; 
+            if (input[j] > input[j+1]) swap(input[j], input[j+1]);
+        }
+    }
+
+    auto stop = high_resolution_clock::now(); // Stop Time
+    auto duration = duration_cast<microseconds>(stop - start);
+
+    cout << "Output: "; print(input);
+    cout << "Time Taken: " << duration.count() << " microseconds" << endl;
+    cout << "Iterations: " << iterations << endl;
 }
 
 // 2. ARRAY TEST
 void testArray() {
     cout << "\n=== ARRAY OPERATIONS ===\n";
-    vector<int> arr = {10,20,30,40};
-    
-    cout << "Array: "; print(arr);
+    vector<int> arr = {10, 20, 30, 40};
+    auto start = high_resolution_clock::now();
+
     auto it = find(arr.begin(), arr.end(), 30);
+    
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+
     cout << "Search 30: index " << (it-arr.begin()) << endl;
-    
-    arr[1] = 999; arr.erase(arr.begin()+2);
-    cout << "After update+delete: "; print(arr);
-}
-
-// 3. STRING TEST
-void testString() {
-    cout << "\n=== STRING OPERATIONS ===\n";
-    string s = "hello";
-    cout << "String: " << s << endl;
-    
-    s[1] = 'a'; s.erase(2,2);
-    cout << "After update+delete: " << s << endl;  // "halo"
-}
-
-// 4. LINKED LIST TEST
-void testLinkedList() {
-    cout << "\n=== LINKED LIST ===\n";
-    list<int> ll = {10,20,30};
-    cout << "LL: ";
-    for(int x:ll) cout<<x<<" "; cout<<endl;
-    
-    ll.erase(next(ll.begin(),1));
-    cout << "After delete: ";
-    for(int x:ll) cout<<x<<" "; cout<<endl;
+    cout << "Operation Time: " << duration.count() << " microseconds" << endl;
 }
 
 int main() {
     testSorting();
     testArray();
-    testString();
-    testLinkedList();
     return 0;
 }
